@@ -9,7 +9,33 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
 </head>
-<body>
+<body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Sistema de Tickets</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="tickets.html">Tickets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="new-ticket.html">Nuevo Ticket</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="metrics.html">Métricas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin.html">Administración</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="logout-link" href="#">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
     <div class="container mt-4">
         <h2>Métricas del Sistema de Tickets</h2>
         <div id="metrics-content">
