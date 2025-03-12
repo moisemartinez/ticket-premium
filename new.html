@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Ticket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Crear Nuevo Ticket</h2>
+        <form id="new-ticket-form">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control" id="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea class="form-control" id="description" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="priority" class="form-label">Prioridad</label>
+                <select class="form-select" id="priority">
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Categoría</label>
+                <input type="text" class="form-control" id="category">
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Ticket</button>
+        </form>
+    </div>
+    <script type="module">
+        // Firebase Configuration and Initialization
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZFPKo-_sMqKQ_q-B1a1Nje-n7znSRiic",
+            authDomain: "tickets-premium.firebaseapp.com",
+            projectId: "tickets-premium",
+            storageBucket: "tickets-premium.firebasestorage.app",
+            messagingSenderId: "839680677649",
+            appId: "1:839680677649:web:929385278ed03c647e9eb0"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const newTicketForm = document.getElementById('new-ticket-form');
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        newTicketForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const priority = document.getElementById('priority').value;
+            const category = document.getElementById('category').value;
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    await addDoc(collection(db, "tickets"), {
+                        title: title,
+                        description: description,
+                        priority: priority,
+                        category: category,
+                        status: 'abierto',
+                        createdBy: user.uid,
+                        creationDate: serverTimestamp()
+                    });
+                    alert('Ticket creado con éxito.');
+                    window.location.href = 'tickets.html';
+                } catch (error) {
+                    console.error('Error al crear el ticket:', error);
+                    alert('Error al crear el ticket: ' + error.message);
+                }
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
