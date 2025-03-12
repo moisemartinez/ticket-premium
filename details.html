@@ -58,7 +58,21 @@
             </div>
         </div>
     </div>
-    <script type="module">
+    <script type="module">import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+const auth = getAuth();
+const logoutLink = document.getElementById('logout-link');
+
+if(logoutLink){
+    logoutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        signOut(auth).then(() => {
+            window.location.href = 'index.html';
+        }).catch((error) => {
+            console.error('Error al cerrar sesión:', error);
+        });
+    });
+}
         // Firebase Configuration and Initialization
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
